@@ -15,45 +15,90 @@ var baddie = [
 ];
 
 
+//Your names have confused you.  Go back through and follow connections.
+//what are you trying to "say"
+
+
+//I am trying to solve  why my damage, health, and enemy attacks are not
+//adding and subtracting.
+//the moves work, and logic runs back and forth and time out function works
+//but no math, and enemy names are not logging --return object object
+//
+
+//solve this by figureing out your random number generators
+
+//solve name obj shit by figuring out how variables change hands and check scope
 
 //FIGURE OUT HOW TO LOAD MEGAMAN HERE3
 var heroImage = 'images/megaman.png';
 $('#hero_img').attr('src', heroImage);
 
-var heroHealth = 100
-var healthUpdate = 0
-var baddieHealthUpdate = 0
-var baddieHealth = 0
+var heroHealthAtLoad = 100
+var heroHealthAfterMove = 0
+
+var enemyName = ''
+var enemyImage = ''
+var enemyHealthAtLoad = 0
+var enemyHealthAfterMove = 0
 
 
 
 //baddieSelector works dont touch/////////////////////////////////////////////
 
 // on game load run whichBaddie
-function baddieSelctor(){
+function enemySelctor(){
   var enemyChoice = Math.floor(Math.random() * baddie.length);
-    $('#baddie .name').text(baddie[enemyChoice][0]);
-    $('#baddie .baddie_health').text('Health: ' + baddie[enemyChoice][2]);
-    $('#baddie_img').attr('src', baddie[enemyChoice][1]);
+    enemyName = (baddie[enemyChoice][0]);
+    enemyHealthAtLoad = (baddie[enemyChoice][2]);
+    enemyImage = ('src', baddie[enemyChoice][1]);
 };
- var whichBaddie = baddieSelctor(); //trying to use this to get
+ // var whichBaddie = enemyChoice; //trying to use this to get
   //around scope issue with enemy choice here and also in attk func
 
 //////////Don't touch this part////////////////////////////////////////////////////////////////////
 
 
- function baddieAttack(){
-    console.log('bad guy attacks')
-      var badGuyAttack = Math.floor(Math.random() * 25);
+ function enemyAttack(){
+    console.log(enemyName + ' attacks')
+      var badGuyAttackDamage = Math.floor(Math.random() * 25);
 
-      healthUpdate = $(heroHealth - badGuyAttack);
+      heroHealthAfterMove = (heroHealthAtLoad - badGuyAttackDamage);
+      heroHealthAtLoad = heroHealthAfterMove;
 
-      $('#status_text').text(whichBaddie + ' does ' + badGuyAttack + ' damage!');
-      $('.baddieHealth').text('Health: ' + baddieHealthUpdate);
-
+      // $('#status_text').text(whichBaddie + ' does ' + badGuyAttack + ' damage!');
+      console.log(enemyName + ' does ' + badGuyAttackDamage + ' damage!');
+      // $('.baddieHealth').text('Health: ' + baddieHealthUpdate);
+      console.log('Megaman Health: ' + heroHealthAtLoad);
       isGameOver();
+
     };
 
+ function normAtk(){
+        console.log('normal attack thrown')
+
+        // var attackMiss = Math.floor((Math.random) * 10);
+        //  if (attackMiss < 3){
+          var heroAttackDamage = Math.floor(Math.random() * 20);
+
+           // $('#status_text').text('Megaman does ' + damage + 'damage!');
+
+           enemyHealthAfterMove = (enemyHealthAtLoad - heroAttackDamage);
+           enemyHealthAtLoad = enemyHealthAfterMove;
+
+           console.log('Megaman does ' + heroAttackDamage + ' damage!')
+
+           console.log(enemyName + ' health is ' + enemyHealthAfterMove)
+
+         // }else{
+
+         //  $('#status_text').text('you missed!')
+
+         // }
+
+        isGameOver();
+        setTimeout(enemyAttack, 3000);
+
+       };
 
 
 
@@ -62,42 +107,25 @@ function baddieSelctor(){
     //random percent heal
       function healBtn(){
         console.log('used health for turn')
-        var rndmHealth = Math.floor((Math.random() * 20) + 10);
+        var rndmHealthValue = Math.floor((Math.random() * 20) + 10);
+        console.log('heal restores ' + rndmHealthValue + ' health to Megaman');
 
-        healthUpdate = $(rndmHealth + heroHealth);
+        heroHealthAfterMove = (heroHealthAtLoad + rndmHealthValue);
+        heroHealthAtLoad = heroHealthAfterMove;
 
-        $('.hero_health').text('Health: ' + (healthUpdate));
-        $('#status_text').text('restoring ' + rndmHealth + ' health')
-
+        // $('.hero_health').text('Health: ' + (heroHealthAfterMove));
+        // $('#status_text').text('restoring ' + rndmHealthValue + ' health')
+        console.log('Megamans new health total is ' + heroHealthAtLoad)
         isGameOver();
 
-        setTimeout(baddieAttack, 5000);
+        setTimeout(enemyAttack, 3000);
 
         };
 
+
+
       //random percent damage
-      function normAtk(){
-        console.log('normal attk thrown')
 
-        var attackMiss = Math.floor((Math.random) * 10);
-         if (attackMiss < 3){
-          var damage = Math.floor((Math.random) * 25);
-
-           $('#status_text').text(baddie + ' does ' + damage + 'damage!');
-
-           baddieHealthUpdate = (baddieHealth - damage)
-
-
-         }else{
-
-          $('#status_text').text('you missed!')
-
-         }
-
-        isGameOver();
-        setTimeout(baddieAttack, 5000);
-
-       };
 
 
 
@@ -107,18 +135,21 @@ function baddieSelctor(){
       //random percent heavy damage
       function heavyAtk(){
         console.log('heavy attack thrown')
-        var heavyAtkMiss = Math.floor(((Math.random) * 35) + 1);
+        // var heavyAtkMiss = Math.floor((Math.random) * 35);
 
-        var hvyDamage = Math.floor(((Math.random) * 40) + 30);
+        // if (heavyAtkMiss >= 35){
+        var hvyDamage = Math.floor(Math.random() * 40);
 
-        if (heavyAtkMiss >= 35){
-          $('#status_text').text('you missed!');
-        }else{
-          $('#status_text').text('epic attack! you did' + hvyDamage + 'damge');
-          baddieHealthUpdate = (baddieHealth - hvyDamage)
-        }
+
+          // $('#status_text').text('you missed!');
+        // }else{
+        //   $('#status_text').text('epic attack! you did' + hvyDamage + 'damge');
+          enemyHealthAfterMove = (enemyHealthAtLoad - hvyDamage);
+          enemyHealthAtLoad = enemyHealthAfterMove;
+          console.log('Heavy attk does ' + hvyDamage + ' damage. ' + enemyName + ' health is ' + enemyHealthAfterMove)
+
         isGameOver();
-        setTimeout(baddieAttack, 5000);
+        setTimeout(enemyAttack, 3000);
       };
 
 
@@ -132,13 +163,16 @@ function baddieSelctor(){
 
       //loop through is it a win?
       function isGameOver(){
-        console.log('running gameover func')
-        if (baddieHealth <=0){
-          $('#status_text').text('Game Over: you win!');
-        } else if (heroHealth <=0){
-          $('#status_text').text('you lose bitch');
-      } else{
 
+        console.log('running gameover func')
+        if (heroHealthAtLoad <= 0){
+          console.log('game over, you lose');
+          // $('#status_text').text('Game Over: you win!');
+        } else if (enemyHealthAfterMove <= 0){
+
+          console.log('you win Bitch!');
+          // make buttons go away
+          // $('#status_text').text('you lose bitch');
       }
     };
 
@@ -153,7 +187,7 @@ function baddieSelctor(){
 
 //event listeners tied to actions here
   $(document).ready(function(){
-    baddieSelctor();
+    enemySelctor();
     //eventListeners();
   });
 
